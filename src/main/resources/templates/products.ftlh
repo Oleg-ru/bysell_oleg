@@ -9,6 +9,11 @@
 <H1>BYSELL</H1><hr>
 
 <h4>Товары со всей России:</h4>
+<form action="/" method="get">
+    Поиск по названию объявления: <input type="text" name="title"><br>
+    <input type="submit" value="Поиск"/>
+</form>
+<hr>
 <#list products as product>
     <div>
         <p>
@@ -16,8 +21,9 @@
             <!--взятие названия товара\цены товара и генерация ссылки получая id товара для уникальной ссылки-->
         </p>
     </div>
+    <#else>
+    Товаров нет
 </#list>
-<hr>
 <h3>Создать новый товар</h3>
 <form action="/product/create", method="post">
     Название объявления <input type="text", name="title"> <br><br>

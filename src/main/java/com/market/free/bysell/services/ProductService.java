@@ -2,51 +2,35 @@ package com.market.free.bysell.services;
 
 
 import com.market.free.bysell.models.Product;
+import com.market.free.bysell.repositoryes.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class ProductService {
-    private List<Product> products = new ArrayList<>();
-    private long id = 0;
-
-    {
-        products.add(new Product(
-                ++id,
-                "PlayStation",
-                "Gamer stars for you",
-                67000,
-                "Stavropol",
-                "Andrey"));
-        products.add(new Product(
-                ++id,
-                "iPhone 14 pro max",
-                "For you a new smartphone",
-                157999,
-                "Moscow",
-                "Abinari"));
-    }
-
-    public List<Product> listProducts() {
-        return products;
+    private final ProductRepository productRepository;
+    public List<Product> listProducts(String title) {
+        if (title != null )
+            return productRepository.findByTitle(title);
+        return productRepository.findAll();
     }
 
     public void saveProduct(Product product) {
-        product.setId(++id);
-        products.add(product);
+        log.info("Save new {}", product);
+        productRepository.save(product);
     }
 
     public void deleteProduct(Long id) {
-        products.removeIf(product -> product.getId().equals(id));
+        productRepository.deleteById(id);
     }
 
     public Product getProductById(Long id) {
-        for (Product product : products) {
-            if (product.getId().equals(id))
-                return product;
-        }
-        return null;
+        return productRepository.findById(id).orElse(null); // Optional найти товар в БД и если не найден вернуть null
     }
 }

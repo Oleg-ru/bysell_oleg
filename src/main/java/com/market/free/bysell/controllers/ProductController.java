@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @AllArgsConstructor
@@ -16,8 +17,11 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/")
-    public String products(Model model) { // model передача данных в шаблонизатор
-        model.addAttribute("products", productService.listProducts()); // ключ значение
+    public String products(
+            @RequestParam(name = "title",
+                    required = false) String title,
+            Model model) { // model передача данных в шаблонизатор
+        model.addAttribute("products", productService.listProducts(title)); // ключ значение
         return "products";
     }
 
